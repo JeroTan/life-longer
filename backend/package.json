@@ -3,15 +3,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "tsx ./main.ts",
-    "check": "tsc --noEmit"
+    "start": "tsx ./src/main.ts",
+    "check": "tsc --noEmit",
+    "wrangler-types": "wrangler types"
   },
   "devDependencies": {
-    "typescript": "5",
-    "tsx": "4"
+    "tsx": "4",
+    "typescript": "5"
   },
   "dependencies": {
-    "elysia": "1",
-    "@elysiajs/node": "1"
+    "@elysiajs/node": "1",
+    "@elysiajs/openapi": "^1.4.14",
+    "elysia": "1"
   }
 }

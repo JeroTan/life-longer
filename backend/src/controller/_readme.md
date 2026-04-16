@@ -1,0 +1,1 @@
+The content of ./src/controller/** is for files that process a higher level logic. They will mostly use services to do specific and  atomic task, while controller prepares good status codes, message, preparing response data and many simple if-else logics.
