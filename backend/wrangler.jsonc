@@ -8,10 +8,6 @@
 		// "nodejs_compat_v2",
 		"global_fetch_strictly_public"
 	],
-	"assets": {
-		"directory": "./dist",
-		"binding": "ASSETS"
-	},
 	"preview_urls": false,
 	"workers_dev": false,
 	"observability": {
