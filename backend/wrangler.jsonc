@@ -1,0 +1,108 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"main": "main.ts",
+	"name": "life-longer-backend",
+	"compatibility_date": "2025-09-15",
+	"compatibility_flags": [
+		"nodejs_compat",
+		// "nodejs_compat_v2",
+		"global_fetch_strictly_public"
+	],
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS"
+	},
+	"preview_urls": false,
+	"workers_dev": false,
+	"observability": {
+		"enabled": true,
+		"head_sampling_rate": 1,
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "life-longer-db-development",
+			"database_id": "a260cbe9-c274-4b01-9cef-842505cbbe71",
+			"remote": true
+		}
+	],
+	"ai": {
+		"binding": "AI",
+		"remote": true
+	},
+	"durable_objects": {
+		"bindings": [
+			{
+				"class_name": "Payments",
+				"name": "PAYMENTS",
+			},
+		],
+	},
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_sqlite_classes": ["Payments"],
+		},
+	],
+	"env": {
+		"development": {
+			"name": "life-longer-backend-development",
+			"durable_objects": {
+				"bindings": [
+					{
+						"class_name": "Payments",
+						"name": "PAYMENTS",
+					},
+				],
+			},
+			"migrations": [
+				{
+					"tag": "v1",
+					"new_sqlite_classes": ["Payments"],
+				},
+			],
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "life-longer-db-development",
+					"database_id": "a260cbe9-c274-4b01-9cef-842505cbbe71",
+					"remote": true
+				}
+			],
+			"ai": {
+				"binding": "AI",
+			},
+		},
+		"production": {
+			"name": "life-longer-backend-production",
+			"durable_objects": {
+				"bindings": [
+					{
+						"class_name": "Payments",
+						"name": "PAYMENTS",
+					},
+				],
+			},
+			"migrations": [
+				{
+					"tag": "v1",
+					"new_sqlite_classes": ["Payments"],
+				},
+			],
+			
+			"ai": {
+				"binding": "AI",
+				"remote": true,
+			},
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "life-longer-db-production",
+          "database_id": "e5b6d95a-43b7-493e-8585-3dd115cb6262",
+          "remote": true
+        }
+      ],
+		},
+		
+	},
+}
