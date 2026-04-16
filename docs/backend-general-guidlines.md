@@ -33,6 +33,33 @@ When creating a new feature:
 - **Worker Entrypoint:** The main entry point is `src/cloudflare/worker.ts`. It exports the main `fetch` handler (delegated to the Elysia app) and `queue` consumers. 
 - **Durable Objects:** Any Durable Objects must be exported from `src/cloudflare/worker.ts` so that the Cloudflare runtime can discover them.
 
+## Database (Cloudflare D1 & Drizzle ORM)
+
+The backend uses **Cloudflare D1** (serverless SQLite) for database storage and **Drizzle ORM** for type-safe database access.
+
+### Working with Drizzle ORM
+
+When building services that interact with the database:
+- Drizzle provides a lightweight, fully typed way to build queries. 
+- You should pass the D1 database binding into Drizzle to execute queries.
+- Schema definitions and queries should be strongly typed, ensuring schema matches your TS interfaces.
+
+```typescript
+// Example initialization
+import { drizzle } from 'drizzle-orm/d1';
+
+export class SampleService {
+  private db;
+  constructor(d1Binding: D1Database) {
+    this.db = drizzle(d1Binding);
+  }
+  
+  async getUsers() {
+    // return await this.db.select().from(users).all();
+  }
+}
+```
+
 ## Important Atomic Functions
 
 Pay special attention to these utilities when implementing features that require security or tokens.
