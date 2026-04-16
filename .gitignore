@@ -8,6 +8,6 @@
 raw-data
 raw-data/*
 raw-data/**/*
-
+.venv/
 
 node_modules/
