@@ -30,6 +30,7 @@ When creating a new feature:
   ```typescript
   import { env } from "cloudflare:workers"; 
   ```
+- **Type Definitions (`Env` Interface):** There is **no need** to blindly add or manually create an `Env` interface. The `Env` interface is automatically generated from `wrangler.jsonc` by running `npm run wrangler-types` (or `npx wrangler types`). You do not even need to manually import it across your files; the TypeScript compiler knows about the generated global types.
 - **Worker Entrypoint:** The main entry point is `src/cloudflare/worker.ts`. It exports the main `fetch` handler (delegated to the Elysia app) and `queue` consumers. 
 - **Durable Objects:** Any Durable Objects must be exported from `src/cloudflare/worker.ts` so that the Cloudflare runtime can discover them.
 
