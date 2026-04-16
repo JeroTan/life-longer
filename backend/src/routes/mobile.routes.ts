@@ -6,5 +6,15 @@ export function MobileRoutes({
 }:{
   sampleController: SampleController,
 }){
-  mainApp.get("/mobile/sample", () => sampleController.sampleTodo());
+  mainApp.group("/sample", (app)=>{
+    app.get("/", () => sampleController.sampleTodo(), {
+      tags: [""],
+      detail: {
+        description: "Sample API",
+        summary: "This is a sample API endpoint"
+      }
+    });
+
+    return app;
+  });
 }
