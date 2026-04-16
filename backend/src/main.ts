@@ -3,7 +3,7 @@ import { Elysia } from "elysia";
 import { CloudflareAdapter } from 'elysia/adapter/cloudflare-worker'
 import { Container } from "./container";
 
-export const mainApp = Container(new Elysia({ adapter: CloudflareAdapter,  aot: false })
+export const mainApp = Container(new Elysia({ adapter: CloudflareAdapter,  aot: false, normalize: true })
   .use(openapi())
-  .compile())
+)
 
