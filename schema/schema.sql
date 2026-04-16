@@ -4,7 +4,10 @@
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id TEXT PRIMARY KEY,
+    google_id TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
+    name TEXT,
+    picture TEXT,
     credits INTEGER DEFAULT 0,
     max_saved_analyses INTEGER DEFAULT 3, -- Freemium storage limit for saved analyses
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP

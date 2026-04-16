@@ -2,6 +2,7 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"main": "./src/cloudflare/worker.ts",
 	"name": "life-longer-backend",
+	"account_id": "8e6c0cd85435131ccf9936cc03cb62e5",
 	"compatibility_date": "2025-09-15",
 	"compatibility_flags": [
 		"nodejs_compat",
