@@ -1,7 +1,7 @@
 import Elysia from "elysia";
 import { SampleService } from "./services/SampleServices";
 import { SampleController } from "./controller/Sample";
-import { MobileRoutes } from "./routes/mobile.routes";
+import { MobileRoutes } from "./routes/sample.routes";
 
 
 

@@ -14,6 +14,21 @@ The backend uses **Elysia.js** running on **Cloudflare Workers**.
 - **`lib/`**: Contains reusable libraries, atomic functions, and utilities (e.g., cryptography, durable object helpers).
 - **`scripts/`**: Contains standalone scripts (e.g., database seeding).
 
+### Sample Files Reference
+
+The `src/` directory includes sample files that demonstrate exactly how to structure new features. Before implementing a new feature, review these files as a reference for the correct file content structure and formatting:
+
+```text
+src/
+├── container.ts               # Shows how to inject SampleService into SampleController and map it to MobileRoutes
+├── controller/
+│   └── Sample.ts              # Shows how a controller is structured and receives its service dependencies
+├── routes/
+│   └── sample.routes.ts       # Shows how Elysia route groups are structured and use the controller
+└── services/
+    └── SampleServices.ts      # Shows how a service class is structured
+```
+
 ## Dependency Injection (Container Pattern)
 
 The application uses manual dependency injection centralized in **`src/container.ts`**. 
