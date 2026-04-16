@@ -29,15 +29,15 @@
 	"durable_objects": {
 		"bindings": [
 			{
-				"class_name": "Payments",
-				"name": "PAYMENTS",
+				"class_name": "Payment",
+				"name": "PAYMENT",
 			},
 		],
 	},
 	"migrations": [
 		{
 			"tag": "v1",
-			"new_sqlite_classes": ["Payments"],
+			"new_sqlite_classes": ["Payment"],
 		},
 	],
 	"env": {
@@ -46,15 +46,15 @@
 			"durable_objects": {
 				"bindings": [
 					{
-						"class_name": "Payments",
-						"name": "PAYMENTS",
+						"class_name": "Payment",
+						"name": "PAYMENT",
 					},
 				],
 			},
 			"migrations": [
 				{
 					"tag": "v1",
-					"new_sqlite_classes": ["Payments"],
+					"new_sqlite_classes": ["Payment"],
 				},
 			],
 			"d1_databases": [
@@ -74,15 +74,15 @@
 			"durable_objects": {
 				"bindings": [
 					{
-						"class_name": "Payments",
-						"name": "PAYMENTS",
+						"class_name": "Payment",
+						"name": "PAYMENT",
 					},
 				],
 			},
 			"migrations": [
 				{
 					"tag": "v1",
-					"new_sqlite_classes": ["Payments"],
+					"new_sqlite_classes": ["Payment"],
 				},
 			],
 			
