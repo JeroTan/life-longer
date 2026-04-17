@@ -28,6 +28,47 @@ export function AuthRoutes({ authController }: { authController: AuthController 
       }
     });
 
+    app.post("/register", async ({ body, set }) => {
+      return await authController.register(body, set);
+    }, {
+      body: t.Object({
+        email: t.String({ format: "email" }),
+        password: t.String()
+      }),
+      detail: {
+        tags: ['Auth'],
+        summary: 'Register User',
+        description: 'Registers a new user with email and password.'
+      }
+    });
+
+    app.post("/login", async ({ body, set }) => {
+      return await authController.login(body, set);
+    }, {
+      body: t.Object({
+        email: t.String({ format: "email" }),
+        password: t.String()
+      }),
+      detail: {
+        tags: ['Auth'],
+        summary: 'Login User',
+        description: 'Authenticates a user with email and password, returning a JWT.'
+      }
+    });
+
+    app.post("/forgot-password", async ({ body, set }) => {
+      return await authController.forgotPassword(body, set);
+    }, {
+      body: t.Object({
+        email: t.String({ format: "email" })
+      }),
+      detail: {
+        tags: ['Auth'],
+        summary: 'Forgot Password',
+        description: 'Initiates a password reset request.'
+      }
+    });
+
     return app;
   });
 }

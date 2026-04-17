@@ -13,7 +13,8 @@ const mockDb = {
 };
 
 vi.mock('drizzle-orm/d1', () => ({
-  drizzle: () => mockDb
+  drizzle: () => mockDb,
+  eq: vi.fn()
 }));
 
 // Mock fetch globally
@@ -64,5 +65,46 @@ describe('Auth Endpoints', () => {
     expect(response.status).toBe(302);
     const location = response.headers.get('location');
     expect(location).toContain('lifelonger://login?token=');
+  });
+
+  it('POST /auth/register should create a user and return a token', async () => {
+    mockDb.get.mockResolvedValueOnce(null); // email not in use
+
+    const request = new Request('http://localhost/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'test2@example.com', password: 'password123' })
+    });
+
+    const response = await mainApp.handle(request);
+    
+    expect(response.status).toBe(201);
+    const data = (await response.json()) as any;
+    expect(data.token).toBeDefined();
+  });
+
+  it('POST /auth/login should return a token for valid credentials', async () => {
+    // Generate valid hash using subtle crypto natively available
+    const encoder = new TextEncoder();
+    const dataBuffer = encoder.encode('password123');
+    const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, "0")).join("");
+
+    mockDb.get.mockResolvedValueOnce({
+      id: 'test_user_id',
+      password: hashHex
+    });
+
+    const request = new Request('http://localhost/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'test2@example.com', password: 'password123' })
+    });
+
+    const response = await mainApp.handle(request);
+    
+    expect(response.status).toBe(200);
+    const data = (await response.json()) as any;
+    expect(data.token).toBeDefined();
   });
 });

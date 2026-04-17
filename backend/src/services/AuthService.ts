@@ -1,5 +1,6 @@
 import { env } from "cloudflare:workers";
 import { jwtEncrypt } from "../lib/crypto/jwt";
+import { hash, verifyHash } from "../lib/crypto/hash";
 import { drizzle } from "drizzle-orm/d1";
 import { users } from "../db/schema";
 import { eq } from "drizzle-orm";
@@ -100,5 +101,88 @@ export class AuthService {
     }
 
     return jwt;
+  }
+
+  async registerUser(email: string, passwordRaw: string, d1Db: D1Database) {
+    const db = drizzle(d1Db);
+
+    const existing = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, email))
+      .get();
+    
+    if (existing) {
+      throw new Error("Email already in use");
+    }
+
+    const passwordHashed = await hash(passwordRaw);
+    const newUserId = crypto.randomUUID();
+
+    await db.insert(users).values({
+      id: newUserId,
+      email,
+      password: passwordHashed,
+      credits: 0,
+      maxSavedAnalyses: 3
+    }).execute();
+
+    const { data: jwt, error } = await jwtEncrypt({
+      payload: { id: newUserId },
+      secretKey: env.JWT_SECRET,
+      expiresInSeconds: 60 * 60 * 24 * 30 // 30 days
+    });
+
+    if (error || !jwt) {
+      throw new Error("Failed to generate JWT: " + error);
+    }
+
+    return jwt;
+  }
+
+  async loginUser(email: string, passwordRaw: string, d1Db: D1Database) {
+    const db = drizzle(d1Db);
+
+    const user = await db
+      .select({ id: users.id, password: users.password })
+      .from(users)
+      .where(eq(users.email, email))
+      .get();
+
+    if (!user || !user.password) {
+      throw new Error("Invalid email or password");
+    }
+
+    const isValid = await verifyHash(passwordRaw, user.password);
+    if (!isValid) {
+      throw new Error("Invalid email or password");
+    }
+
+    const { data: jwt, error } = await jwtEncrypt({
+      payload: { id: user.id },
+      secretKey: env.JWT_SECRET,
+      expiresInSeconds: 60 * 60 * 24 * 30 // 30 days
+    });
+
+    if (error || !jwt) {
+      throw new Error("Failed to generate JWT: " + error);
+    }
+
+    return jwt;
+  }
+
+  async forgotPassword(email: string, d1Db: D1Database) {
+    const db = drizzle(d1Db);
+
+    const user = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, email))
+      .get();
+
+    // Log the intent (would integrate email service here)
+    console.log(`Password reset requested for ${email}`);
+
+    return { success: true };
   }
 }

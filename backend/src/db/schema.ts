@@ -3,7 +3,8 @@ import { sql } from 'drizzle-orm';
 
 export const users = sqliteTable('users', {
   id: text('id').primaryKey(),
-  googleId: text('google_id').unique().notNull(),
+  googleId: text('google_id').unique(),
+  password: text('password'),
   email: text('email').unique().notNull(),
   name: text('name'),
   picture: text('picture'),

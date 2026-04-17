@@ -4,7 +4,8 @@
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id TEXT PRIMARY KEY,
-    google_id TEXT UNIQUE NOT NULL,
+    google_id TEXT UNIQUE,
+    password TEXT,
     email TEXT UNIQUE NOT NULL,
     name TEXT,
     picture TEXT,
