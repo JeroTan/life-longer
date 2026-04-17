@@ -5,12 +5,14 @@ This document describes the database schema used in the LifeLonger project. The 
 ## Tables Overview
 
 ### 1. `users`
-
-Tracks user identity, credits, and storage limits for saved analyses.
-
-- `id` (TEXT, PK): Unique identifier for the user.
+Tracks user identity, credits, and storage limits for saved analyses. Supports both Google OAuth and native email/password auth.
+- `id` (TEXT, PK): Unique identifier for the user (UUID).
+- `google_id` (TEXT, UNIQUE, NULLABLE): Unique identifier for the user from Google. Optional if using email/password.
+- `password` (TEXT, NULLABLE): Salted SHA-256 hashed password. Format: `salt$hash`. Optional if using Google OAuth.
 - `email` (TEXT, UNIQUE): User's email address.
-- `credits` (INTEGER): Available credits for analysis.
+- `name` (TEXT, NULLABLE): User's full name (provided by Google profile).
+- `picture` (TEXT, NULLABLE): URL to the user's profile picture (provided by Google profile).
+- `credits` (INTEGER): Available credits for analysis (default: 3).
 - `max_saved_analyses` (INTEGER): Freemium storage limit for saved analyses (default: 3).
 - `created_at` (DATETIME): Timestamp when the user was created.
 

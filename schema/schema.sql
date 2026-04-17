@@ -9,7 +9,7 @@ CREATE TABLE users (
     email TEXT UNIQUE NOT NULL,
     name TEXT,
     picture TEXT,
-    credits INTEGER DEFAULT 0,
+    credits INTEGER DEFAULT 3,
     max_saved_analyses INTEGER DEFAULT 3, -- Freemium storage limit for saved analyses
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
