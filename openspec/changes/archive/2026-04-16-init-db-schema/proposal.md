@@ -10,6 +10,7 @@ We need to initialize the development database with our schema so that local/rem
 ## Capabilities
 
 ### New Capabilities
+
 - `db-schema-init`: The capability to initialize the database schema and maintain its documentation.
 
 ### Modified Capabilities

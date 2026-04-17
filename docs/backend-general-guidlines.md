@@ -4,9 +4,10 @@ This document outlines the architecture, conventions, and important functions us
 
 ## Architecture Overview
 
-The backend uses **Elysia.js** running on **Cloudflare Workers**. 
+The backend uses **Elysia.js** running on **Cloudflare Workers**.
 
 ### Directory Structure (`src/`)
+
 - **`cloudflare/`**: Contains Cloudflare-specific entry points and configurations (e.g., `worker.ts` and Durable Objects).
 - **`controller/`**: Contains wide-level application logic. Controllers receive requests from routes and orchestrate calls to services.
 - **`services/`**: Contains atomic business logic. Services are responsible for communicating with databases, external APIs, and processing data.
@@ -31,9 +32,10 @@ src/
 
 ## Dependency Injection (Container Pattern)
 
-The application uses manual dependency injection centralized in **`src/container.ts`**. 
+The application uses manual dependency injection centralized in **`src/container.ts`**.
 
 When creating a new feature:
+
 1. Create your `Service`.
 2. Create your `Controller` and inject the required services into its constructor.
 3. Create your `Route` group and pass the controller to it.
@@ -68,14 +70,14 @@ app.post(
       success: t.Boolean(),
       id: t.String(),
     }),
-    
+
     // 2. OpenAPI Documentation
     detail: {
       summary: "Create a new user",
       description: "Creates a new user record in the database and returns the generated ID.",
       tags: ["Users"],
     },
-  }
+  },
 );
 ```
 
@@ -83,10 +85,10 @@ app.post(
 
 - **Environment Bindings:** To use Cloudflare bindings via import, use the following syntax. This is the recommended standard:
   ```typescript
-  import { env } from "cloudflare:workers"; 
+  import { env } from "cloudflare:workers";
   ```
 - **Type Definitions (`Env` Interface):** There is **no need** to blindly add or manually create an `Env` interface. The `Env` interface is automatically generated from `wrangler.jsonc` by running `npm run wrangler-types` (or `npx wrangler types`). You do not even need to manually import it across your files; the TypeScript compiler knows about the generated global types.
-- **Worker Entrypoint:** The main entry point is `src/cloudflare/worker.ts`. It exports the main `fetch` handler (delegated to the Elysia app) and `queue` consumers. 
+- **Worker Entrypoint:** The main entry point is `src/cloudflare/worker.ts`. It exports the main `fetch` handler (delegated to the Elysia app) and `queue` consumers.
 - **Durable Objects:** Any Durable Objects must be exported from `src/cloudflare/worker.ts` so that the Cloudflare runtime can discover them.
 
 ## Database (Cloudflare D1 & Drizzle ORM)
@@ -96,20 +98,21 @@ The backend uses **Cloudflare D1** (serverless SQLite) for database storage and 
 ### Working with Drizzle ORM
 
 When building services that interact with the database:
-- Drizzle provides a lightweight, fully typed way to build queries. 
+
+- Drizzle provides a lightweight, fully typed way to build queries.
 - You should pass the D1 database binding into Drizzle to execute queries.
 - Schema definitions and queries should be strongly typed, ensuring schema matches your TS interfaces.
 
 ```typescript
 // Example initialization
-import { drizzle } from 'drizzle-orm/d1';
+import { drizzle } from "drizzle-orm/d1";
 
 export class SampleService {
   private db;
   constructor(d1Binding: D1Database) {
     this.db = drizzle(d1Binding);
   }
-  
+
   async getUsers() {
     // return await this.db.select().from(users).all();
   }
@@ -121,6 +124,7 @@ export class SampleService {
 Pay special attention to these utilities when implementing features that require security or tokens.
 
 ### Cryptography (`src/lib/crypto/`)
+
 1. **JWT (`jwt.ts`)**: Uses the `jose` library for Edge-compatible JWT signing and verification.
    - Designed to return a tuple-like result object: `{ data, error }` instead of throwing exceptions.
    - `jwtEncrypt({ payload, secretKey, expiresInSeconds })`: Signs a JWT.
@@ -144,7 +148,7 @@ When implementing real-time features (e.g., chat, live updates, or multiplayer i
    This utility automatically creates a `WebSocketPair`, calls `ctx.acceptWebSocket(server)`, and constructs the 101 Switching Protocols response. It returns `{ response, client, server }`.
 
 3. **Attachments**:
-   You can attach metadata (like user IDs or room IDs) directly to the socket via `server.serializeAttachment({ ... })`. This makes it easy to identify *who* sent a message without them needing to re-authenticate on every payload.
+   You can attach metadata (like user IDs or room IDs) directly to the socket via `server.serializeAttachment({ ... })`. This makes it easy to identify _who_ sent a message without them needing to re-authenticate on every payload.
 
 4. **Broadcasting vs. Direct Messaging**:
    - Send to one: `server.send(JSON.stringify({ type: 'hello' }))`
@@ -171,7 +175,7 @@ export class BaseRealtimeDurableObject extends DurableObject {
     // 3. Perform any necessary async business logic *before* upgrading
     // e.g., verifying user identity, checking permissions, updating DB
     const userId = url.searchParams.get("userId");
-    
+
     // 4. Upgrade to WebSocket using the project's utility
     const { response, server } = makeWSServer(this.ctx);
 
@@ -189,12 +193,12 @@ export class BaseRealtimeDurableObject extends DurableObject {
   async webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {
     // Retrieve metadata (who is this?)
     const attachment = ws.deserializeAttachment();
-    
+
     // Parse the message
-    const data = typeof message === 'string' ? JSON.parse(message) : message;
+    const data = typeof message === "string" ? JSON.parse(message) : message;
 
     // Process logic based on message content...
-    
+
     // Broadcast to others if needed
     const allSockets = this.ctx.getWebSockets();
     for (const socket of allSockets) {

@@ -5,10 +5,12 @@ The backend is built using Cloudflare Workers and D1 database. The schema is def
 ## Goals / Non-Goals
 
 **Goals:**
+
 - Apply the existing `schema/schema.sql` to the D1 development database.
 - Document the schema and table relationships in the `docs` folder.
 
 **Non-Goals:**
+
 - Modifying the existing schema or tables in this change.
 - Applying schema to the production database in this change.
 

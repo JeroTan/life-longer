@@ -13,6 +13,7 @@ The database schema has been successfully initialized, but the tables are curren
 ## Capabilities
 
 ### New Capabilities
+
 - `db-seeding`: The capability to ingest raw scientific data (including biolearn extracted datasets) and populate the database with biomarkers, interventions, and their proven relationships.
 
 ### Modified Capabilities

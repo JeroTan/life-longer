@@ -7,16 +7,22 @@
     "check": "tsc --noEmit",
     "wrangler-types": "wrangler types",
     "deploy-development": "npx wrangler@latest deploy --env=\"development\"",
-    "deploy-production": "npx wrangler@latest deploy --env=\"production\""
+    "deploy-production": "npx wrangler@latest deploy --env=\"production\"",
+    "format": "prettier --write .",
+    "test": "vitest"
   },
   "devDependencies": {
+    "@elysiajs/eden": "^1.4.9",
     "drizzle-kit": "^0.31.10",
     "tsx": "^4",
-    "typescript": "5"
+    "typescript": "5",
+    "vitest": "^4.1.4"
   },
   "dependencies": {
+    "@elysiajs/cors": "^1.4.1",
     "@elysiajs/node": "1",
     "@elysiajs/openapi": "^1.4.14",
+    "@types/node": "^25.6.0",
     "csv-parser": "^3.2.0",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",

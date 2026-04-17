@@ -1,6 +1,5 @@
 export class SampleService {
-
-  doSampleTask(){
+  doSampleTask() {
     return "Sample Task Done!";
   }
 }

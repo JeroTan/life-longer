@@ -5,6 +5,7 @@ The backend utilizes Cloudflare D1 for its database. Currently, the schema is ap
 ## Goals / Non-Goals
 
 **Goals:**
+
 - Create a Python script (`extract_biolearn.py`) that utilizes `biolearn` to extract massive datasets into `.csv` format inside `.raw-data/biolearn-library/`.
 - Create a `seed.ts` script in the backend project to parse JSON and CSV files from the `.raw-data/` directory (including the newly extracted biolearn CSVs).
 - Insert unique records into the `biomarkers` table.
@@ -12,12 +13,13 @@ The backend utilizes Cloudflare D1 for its database. Currently, the schema is ap
 - Map and insert relational records into the `biomarker_interventions` table where applicable.
 
 **Non-Goals:**
+
 - Creating a dynamic daily ingestion pipeline. This is a one-off or occasional script to seed the database.
 - Normalizing the raw data flawlessly. We will rely on simple deduplication (e.g., using SQL `INSERT OR IGNORE`).
 
 ## Decisions
 
-- **Execution Environment**: 
+- **Execution Environment**:
   - **Extraction**: We will use a Python environment to `pip install biolearn` and execute a script to save the NHANES/Framingham data as CSVs.
   - **Seeding**: The actual seeding will be a Node.js/TypeScript script that generates SQL `INSERT` statements and writes them to a `.sql` file to be executed via `wrangler d1 execute`. Using `wrangler d1 execute` is the preferred approach for simplicity and security.
 - **Data Mapping**:

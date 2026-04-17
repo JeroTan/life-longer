@@ -12,6 +12,7 @@ We need to update the `users` table schema to support Google OAuth authenticatio
 ## Capabilities
 
 ### New Capabilities
+
 - `user-google-auth`: The capability for users to authenticate via Google OAuth and have their profile data stored.
 
 ### Modified Capabilities

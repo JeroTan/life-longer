@@ -12,4 +12,3 @@ Follow these steps to run [Elysia.js](https://elysiajs.com) under [Node.js](http
    ```bash
    npm start
    ```
-

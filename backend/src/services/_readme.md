@@ -1,1 +1,1 @@
-This is area ./src/services/** is for retrieving data to database or 3rd party apis or doing an atomic task only.
+This is area ./src/services/\*\* is for retrieving data to database or 3rd party apis or doing an atomic task only.

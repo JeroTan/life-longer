@@ -1,12 +1,9 @@
 import { SampleService } from "../services/SampleServices";
 
-
-
-
 export class SampleController {
-  constructor( protected sampleService: SampleService){}
+  constructor(protected sampleService: SampleService) {}
 
-  sampleTodo(){
+  sampleTodo() {
     return this.sampleService.doSampleTask();
   }
 }

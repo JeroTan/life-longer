@@ -5,10 +5,12 @@ The current `users` table schema only stores an internal UUID, email, and credit
 ## Goals / Non-Goals
 
 **Goals:**
+
 - Update `schema/schema.sql` to reflect the new `users` table structure.
 - Add `google_id`, `name`, and `picture` fields to the `users` table.
 
 **Non-Goals:**
+
 - Implementing the OAuth flow in the backend API or frontend client (this change is strictly for the schema update).
 - Implementing authentication tokens (JWTs or session management).
 

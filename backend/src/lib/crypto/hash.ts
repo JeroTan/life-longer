@@ -3,7 +3,9 @@
 // Produce a hex string from an ArrayBuffer
 function bufToHex(buffer: ArrayBufferLike): string {
   const arr = new Uint8Array(buffer);
-  return Array.from(arr).map(b => b.toString(16).padStart(2, '0')).join('');
+  return Array.from(arr)
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 // Convert hex string to Uint8Array
@@ -31,7 +33,7 @@ export async function hash(data: string): Promise<string> {
   combined.set(salt, 0);
   combined.set(dataBuffer, salt.length);
 
-  const hashBuffer = await crypto.subtle.digest('SHA-256', combined.buffer);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", combined.buffer);
   const saltHex = bufToHex(salt.buffer);
   const hashHex = bufToHex(hashBuffer);
 
@@ -44,20 +46,20 @@ export async function verifyHash(data: string, hashToVerify: string): Promise<bo
   const dataBuffer = encoder.encode(data);
 
   // If the stored string contains a salt (salt$hash), use salt
-  if (hashToVerify.includes('$')) {
-    const [saltHex, expectedHashHex] = hashToVerify.split('$');
+  if (hashToVerify.includes("$")) {
+    const [saltHex, expectedHashHex] = hashToVerify.split("$");
     const saltBytes = hexToBytes(saltHex);
     const combined = new Uint8Array(saltBytes.length + dataBuffer.length);
     combined.set(saltBytes, 0);
     combined.set(dataBuffer, saltBytes.length);
 
-    const hashBuffer = await crypto.subtle.digest('SHA-256', combined.buffer);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", combined.buffer);
     const computedHex = bufToHex(hashBuffer);
     return computedHex === expectedHashHex;
   }
 
   // Fallback: legacy unsalted verification (for existing hashes stored without a salt)
-  const legacyHashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+  const legacyHashBuffer = await crypto.subtle.digest("SHA-256", dataBuffer);
   const legacyHex = bufToHex(legacyHashBuffer);
   return legacyHex === hashToVerify;
 }
