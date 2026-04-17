@@ -8,7 +8,7 @@ export const users = sqliteTable('users', {
   email: text('email').unique().notNull(),
   name: text('name'),
   picture: text('picture'),
-  credits: integer('credits').default(0).notNull(),
+  credits: integer('credits').default(3).notNull(),
   maxSavedAnalyses: integer('max_saved_analyses').default(3).notNull(),
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(CURRENT_TIMESTAMP)`).notNull()
 });

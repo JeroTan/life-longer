@@ -33,9 +33,9 @@ export function PaymentRoutes({ paymentController }: { paymentController: Paymen
   mainApp.group("/api/webhooks", (app) => {
     app.post(
       "/lemonsqueezy",
-      async ({ request, set }) => {
+      async ({ request, body, set }) => {
         const signature = request.headers.get("X-Signature");
-        const rawBody = await request.text();
+        const rawBody = body as string;
         return await paymentController.processWebhook(signature, rawBody, set);
       },
       {
@@ -46,9 +46,9 @@ export function PaymentRoutes({ paymentController }: { paymentController: Paymen
           description:
             "Processes incoming webhooks from Lemon Squeezy to update user credits or storage.",
         },
-      }
+      },
     );
 
     return app;
   });
-  }
+}

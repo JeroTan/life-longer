@@ -76,7 +76,7 @@ export class AuthService {
         email,
         name,
         picture,
-        credits: 0,
+        credits: 3,
         maxSavedAnalyses: 3
       }).execute();
       
@@ -123,7 +123,7 @@ export class AuthService {
       id: newUserId,
       email,
       password: passwordHashed,
-      credits: 0,
+      credits: 3,
       maxSavedAnalyses: 3
     }).execute();
 
