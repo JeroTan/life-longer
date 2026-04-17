@@ -39,6 +39,46 @@ When creating a new feature:
 3. Create your `Route` group and pass the controller to it.
 4. **Mandatory:** Inject and wire up the new service, controller, and route in `src/container.ts`. Look at existing references in `container.ts` for how to implement things.
 
+## Elysia Routing & OpenAPI Documentation
+
+Elysia natively supports generating OpenAPI/Swagger documentation, and it heavily utilizes **TypeBox** (`t` from `elysia`) to validate incoming requests and outgoing responses.
+
+### Using TypeBox and OpenAPI
+
+When defining routes, always use TypeBox to validate your `body`, `query`, `params`, and `response`. This automatically adds type safety, runtime validation, and populates the OpenAPI documentation.
+
+You should also use the `detail` property on routes to add rich documentation (summary, description, tags) for the Swagger UI.
+
+```typescript
+import { t } from "elysia";
+
+// Inside a route group
+app.post(
+  "/users",
+  ({ body }) => {
+    // Body is fully typed based on the TypeBox schema!
+    return userController.createUser(body.name);
+  },
+  {
+    // 1. Data Validation (TypeBox)
+    body: t.Object({
+      name: t.String({ description: "The full name of the user" }),
+    }),
+    response: t.Object({
+      success: t.Boolean(),
+      id: t.String(),
+    }),
+    
+    // 2. OpenAPI Documentation
+    detail: {
+      summary: "Create a new user",
+      description: "Creates a new user record in the database and returns the generated ID.",
+      tags: ["Users"],
+    },
+  }
+);
+```
+
 ## Cloudflare Standards
 
 - **Environment Bindings:** To use Cloudflare bindings via import, use the following syntax. This is the recommended standard:
